@@ -38,19 +38,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -103,25 +96,52 @@
   }
 }
 
-/* Tool carousel animations - match Smithery's infinite scroll */
+/* Enhanced Tool carousel animations - smoother, more polished */
 @keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+@keyframes smooth-scroll {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-25%); }
 }
 
 @keyframes pause {
   0%, 100% { transform: translateX(0); }
 }
 
+/* Primary scroll animation - continuous and smooth */
 .animate-scroll {
-  animation: scroll 20s linear infinite;
+  animation: scroll 25s linear infinite;
+  will-change: transform;
 }
 
+/* Enhanced hover state with smoother transition */
 .animate-pause {
-  animation: pause 0.5s ease-in-out;
+  animation: smooth-scroll 3s ease-in-out infinite;
 }
 
-/* Smooth hover transitions */
+/* Smooth hover transitions with better easing */
 .group:hover .animate-scroll {
-  animation-play-state: paused;
+  animation: smooth-scroll 3s ease-in-out infinite;
+}
+
+/* Additional enhancement for tool icons */
+.tool-icons-container {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tool-icons-container:hover {
+  filter: brightness(1.1);
+}
+
+/* Individual tool icon hover effects */
+.tool-icon {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tool-icon:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
 }
