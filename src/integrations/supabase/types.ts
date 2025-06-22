@@ -181,6 +181,65 @@ export type Database = {
           },
         ]
       }
+      tool_connection_configs: {
+        Row: {
+          args: string[] | null
+          auth_instructions: string | null
+          auth_type: string | null
+          claude_desktop_config: Json | null
+          created_at: string | null
+          endpoint_url: string | null
+          id: string
+          install_command: string | null
+          required_env_vars: Json | null
+          run_command: string | null
+          tool_id: string | null
+          transport_type: string
+          updated_at: string | null
+          vscode_config: Json | null
+        }
+        Insert: {
+          args?: string[] | null
+          auth_instructions?: string | null
+          auth_type?: string | null
+          claude_desktop_config?: Json | null
+          created_at?: string | null
+          endpoint_url?: string | null
+          id?: string
+          install_command?: string | null
+          required_env_vars?: Json | null
+          run_command?: string | null
+          tool_id?: string | null
+          transport_type: string
+          updated_at?: string | null
+          vscode_config?: Json | null
+        }
+        Update: {
+          args?: string[] | null
+          auth_instructions?: string | null
+          auth_type?: string | null
+          claude_desktop_config?: Json | null
+          created_at?: string | null
+          endpoint_url?: string | null
+          id?: string
+          install_command?: string | null
+          required_env_vars?: Json | null
+          run_command?: string | null
+          tool_id?: string | null
+          transport_type?: string
+          updated_at?: string | null
+          vscode_config?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_connection_configs_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "mcp_tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tool_downloads: {
         Row: {
           downloaded_at: string | null

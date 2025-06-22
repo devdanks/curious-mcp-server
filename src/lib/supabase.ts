@@ -97,6 +97,14 @@ export const db = {
   updateTool: (id: string, updates: Database['public']['Tables']['mcp_tools']['Update']) =>
     supabase.from('mcp_tools').update(updates).eq('id', id).select().single(),
 
+  // Connection configs
+  getToolConnectionConfigs: (toolId: string) =>
+    supabase
+      .from('tool_connection_configs')
+      .select('*')
+      .eq('tool_id', toolId)
+      .order('transport_type'),
+
   // Tool interactions
   starTool: (toolId: string, userId: string) =>
     supabase.from('tool_stars').insert({ tool_id: toolId, user_id: userId }),

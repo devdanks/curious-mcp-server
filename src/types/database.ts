@@ -12,3 +12,4 @@ export type MCPToolUpdate = Database['public']['Tables']['mcp_tools']['Update'];
 export type UserProfile = Database['public']['Tables']['user_profiles']['Row'];
 export type ToolInstallation = Database['public']['Tables']['tool_installations']['Row'];
 export type ToolReview = Database['public']['Tables']['tool_reviews']['Row'];
+export type ToolConnectionConfig = Database['public']['Tables']['tool_connection_configs']['Row'];
