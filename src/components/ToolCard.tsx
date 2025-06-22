@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Star, Download, ExternalLink, Settings } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -21,20 +20,16 @@ interface ToolCardProps {
   };
   isStarred: boolean;
   onStar: (toolId: string) => void;
+  onInstall: () => void;
+  onClick?: () => void;
 }
 
-export const ToolCard: React.FC<ToolCardProps> = ({ tool, isStarred, onStar }) => {
+export const ToolCard: React.FC<ToolCardProps> = ({ tool, isStarred, onStar, onInstall, onClick }) => {
   const [showConnectionModal, setShowConnectionModal] = useState(false);
-
-  const handleDownload = () => {
-    // Record download
-    console.log('Download tool:', tool.name);
-    // This would typically trigger a download or show installation instructions
-  };
 
   return (
     <>
-      <Card className="group hover:shadow-lg transition-all duration-200 bg-white border-gray-200">
+      <Card className="group hover:shadow-lg transition-all duration-200 bg-white border-gray-200 cursor-pointer" onClick={onClick}>
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
@@ -81,7 +76,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, isStarred, onStar }) =
               )}
             </div>
             
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
               <Button
                 variant="ghost"
                 size="sm"
@@ -106,7 +101,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, isStarred, onStar }) =
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={handleDownload}
+                onClick={onInstall}
                 className="h-8 w-8 p-0"
               >
                 <Download className="w-4 h-4 text-gray-400 hover:text-gray-600" />
