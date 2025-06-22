@@ -1,6 +1,6 @@
 
 import { supabase } from '@/integrations/supabase/client';
-import { Database } from '../types/database';
+import { Database } from '@/integrations/supabase/types';
 
 // Re-export the supabase client
 export { supabase };
@@ -48,7 +48,7 @@ export const db = {
       .eq('is_published', true);
 
     if (filters?.search) {
-      query = query.textSearch('name,description,tags', filters.search);
+      query = query.ilike('name', `%${filters.search}%`);
     }
     
     if (filters?.category) {

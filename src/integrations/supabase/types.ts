@@ -9,7 +9,369 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      mcp_tools: {
+        Row: {
+          author_id: string | null
+          category: string
+          config_schema: Json | null
+          created_at: string | null
+          description: string | null
+          documentation_url: string | null
+          downloads: number | null
+          homepage_url: string | null
+          id: string
+          install_command: string | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          is_verified: boolean | null
+          long_description: string | null
+          mcp_version: string
+          metadata: Json | null
+          name: string
+          organization_id: string | null
+          repository_url: string | null
+          slug: string
+          stars: number | null
+          tags: string[] | null
+          transport_types: string[] | null
+          updated_at: string | null
+          version: string
+        }
+        Insert: {
+          author_id?: string | null
+          category: string
+          config_schema?: Json | null
+          created_at?: string | null
+          description?: string | null
+          documentation_url?: string | null
+          downloads?: number | null
+          homepage_url?: string | null
+          id?: string
+          install_command?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          is_verified?: boolean | null
+          long_description?: string | null
+          mcp_version?: string
+          metadata?: Json | null
+          name: string
+          organization_id?: string | null
+          repository_url?: string | null
+          slug: string
+          stars?: number | null
+          tags?: string[] | null
+          transport_types?: string[] | null
+          updated_at?: string | null
+          version?: string
+        }
+        Update: {
+          author_id?: string | null
+          category?: string
+          config_schema?: Json | null
+          created_at?: string | null
+          description?: string | null
+          documentation_url?: string | null
+          downloads?: number | null
+          homepage_url?: string | null
+          id?: string
+          install_command?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          is_verified?: boolean | null
+          long_description?: string | null
+          mcp_version?: string
+          metadata?: Json | null
+          name?: string
+          organization_id?: string | null
+          repository_url?: string | null
+          slug?: string
+          stars?: number | null
+          tags?: string[] | null
+          transport_types?: string[] | null
+          updated_at?: string | null
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mcp_tools_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          owner_id: string | null
+          slug: string
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          owner_id?: string | null
+          slug: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          owner_id?: string | null
+          slug?: string
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      tool_configurations: {
+        Row: {
+          created_at: string | null
+          default_value: Json | null
+          description: string | null
+          examples: Json | null
+          id: string
+          is_required: boolean | null
+          name: string
+          schema: Json
+          tool_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          default_value?: Json | null
+          description?: string | null
+          examples?: Json | null
+          id?: string
+          is_required?: boolean | null
+          name: string
+          schema: Json
+          tool_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          default_value?: Json | null
+          description?: string | null
+          examples?: Json | null
+          id?: string
+          is_required?: boolean | null
+          name?: string
+          schema?: Json
+          tool_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_configurations_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "mcp_tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tool_downloads: {
+        Row: {
+          downloaded_at: string | null
+          id: string
+          ip_address: unknown | null
+          tool_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          downloaded_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          tool_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          downloaded_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          tool_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_downloads_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "mcp_tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tool_installations: {
+        Row: {
+          id: string
+          installed_at: string | null
+          is_active: boolean | null
+          settings: Json | null
+          tool_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          installed_at?: string | null
+          is_active?: boolean | null
+          settings?: Json | null
+          tool_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          installed_at?: string | null
+          is_active?: boolean | null
+          settings?: Json | null
+          tool_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_installations_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "mcp_tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tool_reviews: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          helpful_count: number | null
+          id: string
+          rating: number | null
+          title: string | null
+          tool_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          helpful_count?: number | null
+          id?: string
+          rating?: number | null
+          title?: string | null
+          tool_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          helpful_count?: number | null
+          id?: string
+          rating?: number | null
+          title?: string | null
+          tool_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_reviews_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "mcp_tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tool_stars: {
+        Row: {
+          created_at: string | null
+          id: string
+          tool_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          tool_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          tool_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_stars_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "mcp_tools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          company: string | null
+          created_at: string | null
+          display_name: string | null
+          github_username: string | null
+          id: string
+          is_verified: boolean | null
+          location: string | null
+          twitter_username: string | null
+          updated_at: string | null
+          username: string | null
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          company?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          github_username?: string | null
+          id: string
+          is_verified?: boolean | null
+          location?: string | null
+          twitter_username?: string | null
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          company?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          github_username?: string | null
+          id?: string
+          is_verified?: boolean | null
+          location?: string | null
+          twitter_username?: string | null
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
