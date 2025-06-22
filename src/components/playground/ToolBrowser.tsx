@@ -117,7 +117,7 @@ export const ToolBrowser = ({ isOpen, onClose, onSelectTool, selectedTools }: To
                       <Badge className="bg-green-600 text-white">Verified</Badge>
                     )}
                   </div>
-                  <p className="text-gray-400 text-sm mb-2">{state.selectedTool.package_name || 'mcp-tool'}</p>
+                  <p className="text-gray-400 text-sm mb-2">{state.selectedTool.name.toLowerCase()}-mcp</p>
                   <p className="text-gray-300">{state.selectedTool.description}</p>
                 </div>
               </div>
@@ -270,7 +270,7 @@ export const ToolBrowser = ({ isOpen, onClose, onSelectTool, selectedTools }: To
                                 <Badge className="bg-green-600 text-white text-xs">✓</Badge>
                               )}
                             </div>
-                            <p className="text-xs text-gray-400 truncate">{tool.package_name || 'mcp-tool'}</p>
+                            <p className="text-xs text-gray-400 truncate">{tool.name.toLowerCase()}-mcp</p>
                           </div>
                         </div>
                       </CardHeader>
