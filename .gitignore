@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.dan/mcp-registry-prompt.md
+.dan/mcp-registry-project-handoff.md
