@@ -98,7 +98,7 @@ export const ToolRegistry: React.FC = () => {
   const [categories, setCategories] = useState<string[]>(['Development', 'Productivity', 'System', 'AI', 'Database']);
   const [isLoading, setIsLoading] = useState(false);  // Don't start loading since we have sample data
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showFeatured, setShowFeatured] = useState(false);
   const [starredTools, setStarredTools] = useState<Set<string>>(new Set());
   const { toast } = useToast();
@@ -114,7 +114,7 @@ export const ToolRegistry: React.FC = () => {
       setIsLoading(true);
       const { data, error } = await db.getTools({
         search: searchQuery || undefined,
-        category: selectedCategory || undefined,
+        category: selectedCategory === 'all' ? undefined : selectedCategory,
         featured: showFeatured || undefined,
         limit: 50,
       });
@@ -131,7 +131,7 @@ export const ToolRegistry: React.FC = () => {
           );
         }
         
-        if (selectedCategory) {
+        if (selectedCategory && selectedCategory !== 'all') {
           filteredTools = filteredTools.filter(tool => tool.category === selectedCategory);
         }
         
@@ -179,11 +179,11 @@ export const ToolRegistry: React.FC = () => {
 
   const clearFilters = () => {
     setSearchQuery('');
-    setSelectedCategory('');
+    setSelectedCategory('all');
     setShowFeatured(false);
   };
 
-  const hasActiveFilters = searchQuery || selectedCategory || showFeatured;
+  const hasActiveFilters = searchQuery || (selectedCategory && selectedCategory !== 'all') || showFeatured;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -216,7 +216,7 @@ export const ToolRegistry: React.FC = () => {
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 {categories.map((category) => (
                   <SelectItem key={category} value={category}>
                     {category}
@@ -249,7 +249,7 @@ export const ToolRegistry: React.FC = () => {
                 Search: "{searchQuery}"
               </Badge>
             )}
-            {selectedCategory && (
+            {selectedCategory && selectedCategory !== 'all' && (
               <Badge variant="secondary">
                 Category: {selectedCategory}
               </Badge>
