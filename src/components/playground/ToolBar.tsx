@@ -12,14 +12,14 @@ interface ToolBarProps {
 
 // Sample tools for empty state (mirror Smithery's exact tools)
 const SAMPLE_TOOLS = [
-  { id: 'exa', name: 'Exa AI', iconUrl: '/icons/exa.png' },
-  { id: 'ddg', name: 'DuckDuckGo', iconUrl: '/icons/duckduckgo.png' },
-  { id: 'github', name: 'GitHub', iconUrl: '/icons/github.png' },
-  { id: 'mem0', name: 'Mem0', iconUrl: '/icons/mem0.png' },
-  { id: 'neon', name: 'Neon', iconUrl: '/icons/neon.png' },
-  { id: 'tavily', name: 'Tavily', iconUrl: '/icons/tavily.png' },
-  { id: 'hyperbrowser', name: 'Hyperbrowser', iconUrl: '/icons/hyperbrowser.png' },
-  { id: 'slack', name: 'Slack', iconUrl: '/icons/slack.png' },
+  { id: 'exa', name: 'Exa AI' },
+  { id: 'ddg', name: 'DuckDuckGo' },
+  { id: 'github', name: 'GitHub' },
+  { id: 'mem0', name: 'Mem0' },
+  { id: 'neon', name: 'Neon' },
+  { id: 'tavily', name: 'Tavily' },
+  { id: 'hyperbrowser', name: 'Hyperbrowser' },
+  { id: 'slack', name: 'Slack' },
 ];
 
 export const ToolBar = ({ connectedTools, onAddTools, onRemoveTool }: ToolBarProps) => {
@@ -63,22 +63,7 @@ export const ToolBar = ({ connectedTools, onAddTools, onRemoveTool }: ToolBarPro
           <div className="flex gap-2 animate-scroll group-hover:animate-pause">
             {scrollingTools.map((tool, i) => (
               <div key={`${tool.id}-${i}`}>
-                {tool.iconUrl ? (
-                  <img
-                    src={tool.iconUrl}
-                    alt={tool.name}
-                    className="w-6 h-6 rounded flex-shrink-0"
-                    onError={(e) => {
-                      // Fallback to generated icon if image fails to load
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      target.nextElementSibling?.classList.remove('hidden');
-                    }}
-                  />
-                ) : null}
-                <div className={tool.iconUrl ? 'hidden' : ''}>
-                  {getToolIcon(tool.name)}
-                </div>
+                {getToolIcon(tool.name)}
               </div>
             ))}
           </div>
