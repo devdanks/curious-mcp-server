@@ -35,7 +35,7 @@ export const db = {
       .from('mcp_tools')
       .select(`
         *,
-        user_profiles!author_id (
+        user_profiles!mcp_tools_author_id_fkey (
           username,
           display_name,
           avatar_url
@@ -75,7 +75,7 @@ export const db = {
       .from('mcp_tools')
       .select(`
         *,
-        user_profiles!author_id (
+        user_profiles!mcp_tools_author_id_fkey (
           username,
           display_name,
           avatar_url,
@@ -141,7 +141,7 @@ export const db = {
       .from('tool_reviews')
       .select(`
         *,
-        user_profiles (
+        user_profiles!tool_reviews_user_id_fkey (
           username,
           display_name,
           avatar_url

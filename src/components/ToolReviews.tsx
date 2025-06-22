@@ -11,13 +11,26 @@ interface ToolReviewsProps {
   toolId: string;
 }
 
+interface ReviewData {
+  id: string;
+  rating: number | null;
+  title: string | null;
+  comment: string | null;
+  created_at: string | null;
+  user_profiles?: {
+    username?: string | null;
+    display_name?: string | null;
+    avatar_url?: string | null;
+  } | null;
+}
+
 export const ToolReviews: React.FC<ToolReviewsProps> = ({ toolId }) => {
   const { data: reviews, isLoading } = useQuery({
     queryKey: ['tool-reviews', toolId],
     queryFn: async () => {
       const { data, error } = await db.getToolReviews(toolId);
       if (error) throw error;
-      return data || [];
+      return (data || []) as ReviewData[];
     },
   });
 
