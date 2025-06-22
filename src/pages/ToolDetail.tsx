@@ -13,24 +13,9 @@ import { ToolReviews } from '@/components/ToolReviews';
 import { SimilarTools } from '@/components/SimilarTools';
 import { ConfigurationRequirements } from '@/components/ConfigurationRequirements';
 import { toast } from 'sonner';
+import { MCPTool } from '@/types/database';
 
-interface ToolData {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  long_description: string | null;
-  version: string;
-  mcp_version: string;
-  category: string;
-  downloads: number | null;
-  stars: number | null;
-  is_verified: boolean | null;
-  is_featured: boolean | null;
-  transport_types: string[] | null;
-  repository_url: string | null;
-  homepage_url: string | null;
-  documentation_url: string | null;
+interface ToolWithRelations extends MCPTool {
   user_profiles?: {
     username?: string | null;
     display_name?: string | null;
@@ -55,7 +40,7 @@ export const ToolDetail = () => {
       if (!slug) throw new Error('Tool slug is required');
       const { data, error } = await db.getTool(slug);
       if (error) throw error;
-      return data as ToolData;
+      return data as ToolWithRelations;
     },
     enabled: !!slug,
   });
