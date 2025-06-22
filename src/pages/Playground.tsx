@@ -92,9 +92,9 @@ export const Playground = () => {
       timestamp: new Date(),
     };
 
-    setState(prev => ({
-      ...prev,
-      messages: [...prev.messages, userMessage],
+    setState(prev => ({ 
+      ...prev, 
+      messages: [...prev.messages, userMessage] 
     }));
 
     // Mock assistant response after a delay
@@ -106,9 +106,9 @@ export const Playground = () => {
         timestamp: new Date(),
       };
 
-      setState(prev => ({
-        ...prev,
-        messages: [...prev.messages, assistantMessage],
+      setState(prev => ({ 
+        ...prev, 
+        messages: [...prev.messages, assistantMessage] 
       }));
     }, 1000);
   };
@@ -118,21 +118,24 @@ export const Playground = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen bg-black text-white">
       <PlaygroundHeader 
         connectedToolsCount={state.connectedTools.length}
         selectedModel={state.selectedModel}
         onModelChange={(model) => setState(prev => ({ ...prev, selectedModel: model }))}
       />
       
-      <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full px-4 py-6">
+      {/* Main content - match Smithery's centered layout */}
+      <main className="max-w-4xl mx-auto px-4 py-8">
+        {/* Tool Carousel - ALWAYS VISIBLE as primary feature */}
         <ToolBar 
           connectedTools={state.connectedTools}
           onAddTools={handleAddTools}
           onRemoveTool={handleRemoveTool}
         />
         
-        <div className="flex-1 mt-6">
+        {/* Chat Interface - streamlined, no separate sections */}
+        <div className="mt-8">
           <ChatInterface 
             messages={state.messages}
             onSendMessage={handleSendMessage}
@@ -142,7 +145,7 @@ export const Playground = () => {
             onProfileChange={(profile) => setState(prev => ({ ...prev, selectedProfile: profile }))}
           />
         </div>
-      </div>
+      </main>
 
       <ToolBrowser 
         isOpen={state.showToolBrowser}

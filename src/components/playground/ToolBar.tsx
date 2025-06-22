@@ -1,9 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Plus, X } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { MCPTool } from '@/types/database';
 
 interface ToolBarProps {
@@ -12,9 +10,19 @@ interface ToolBarProps {
   onRemoveTool: (toolId: string) => void;
 }
 
-export const ToolBar = ({ connectedTools, onAddTools, onRemoveTool }: ToolBarProps) => {
-  const [hoveredTool, setHoveredTool] = useState<string | null>(null);
+// Sample tools for empty state (mirror Smithery's exact tools)
+const SAMPLE_TOOLS = [
+  { id: 'exa', name: 'Exa AI', iconUrl: '/icons/exa.png' },
+  { id: 'ddg', name: 'DuckDuckGo', iconUrl: '/icons/duckduckgo.png' },
+  { id: 'github', name: 'GitHub', iconUrl: '/icons/github.png' },
+  { id: 'mem0', name: 'Mem0', iconUrl: '/icons/mem0.png' },
+  { id: 'neon', name: 'Neon', iconUrl: '/icons/neon.png' },
+  { id: 'tavily', name: 'Tavily', iconUrl: '/icons/tavily.png' },
+  { id: 'hyperbrowser', name: 'Hyperbrowser', iconUrl: '/icons/hyperbrowser.png' },
+  { id: 'slack', name: 'Slack', iconUrl: '/icons/slack.png' },
+];
 
+export const ToolBar = ({ connectedTools, onAddTools, onRemoveTool }: ToolBarProps) => {
   // Generate a simple icon based on tool name
   const getToolIcon = (toolName: string) => {
     const colors = [
@@ -25,112 +33,62 @@ export const ToolBar = ({ connectedTools, onAddTools, onRemoveTool }: ToolBarPro
     const initial = toolName.charAt(0).toUpperCase();
     
     return (
-      <div className={`w-8 h-8 rounded-lg ${colors[colorIndex]} flex items-center justify-center text-white text-sm font-bold`}>
+      <div className={`w-6 h-6 rounded ${colors[colorIndex]} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
         {initial}
       </div>
     );
   };
 
-  if (connectedTools.length === 0) {
-    return (
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 text-center">
-        <div className="mb-4">
-          <div className="w-12 h-12 bg-gray-800 rounded-lg mx-auto mb-3 flex items-center justify-center">
-            <Plus className="w-6 h-6 text-gray-400" />
-          </div>
-          <h3 className="text-lg font-semibold text-white mb-2">No tools connected</h3>
-          <p className="text-gray-400 text-sm">
-            Connect MCP servers to get started with the playground
-          </p>
-        </div>
-        <Button 
-          onClick={onAddTools}
-          className="bg-orange-600 hover:bg-orange-700 text-white"
-        >
-          Browse servers
-        </Button>
-      </div>
-    );
-  }
+  // Use connected tools if available, otherwise show sample tools
+  const displayTools = connectedTools.length > 0 ? connectedTools : SAMPLE_TOOLS;
+  
+  // Double the tools for infinite scroll effect
+  const scrollingTools = [...displayTools, ...displayTools];
 
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <h3 className="text-sm font-medium text-white">Connected Tools</h3>
-          <Badge variant="secondary" className="bg-gray-800 text-gray-300">
-            {connectedTools.length}
-          </Badge>
+    <div className="mb-6">
+      <button 
+        onClick={onAddTools}
+        className="group relative flex items-center gap-3 bg-gray-800 hover:bg-gray-700 
+                   border border-gray-700 rounded-lg px-4 py-3 transition-all duration-200
+                   min-h-[60px] w-full max-w-2xl mx-auto cursor-pointer"
+      >
+        {/* Plus icon */}
+        <div className="flex-shrink-0">
+          <Plus className="w-5 h-5 text-gray-400" />
         </div>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={onAddTools}
-          className="border-gray-700 text-gray-300 hover:text-white"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add more
-        </Button>
-      </div>
-
-      {/* Animated Tool Carousel */}
-      <div className="relative group">
-        <div className="flex gap-2 overflow-hidden max-w-full">
-          <div className="flex gap-2 animate-none group-hover:animate-pulse">
-            {connectedTools.map((tool, index) => (
-              <div
-                key={tool.id}
-                className="flex-shrink-0 relative"
-                onMouseEnter={() => setHoveredTool(tool.id)}
-                onMouseLeave={() => setHoveredTool(null)}
-              >
-                <div className="relative">
+        
+        {/* Tool icons container with horizontal scroll */}
+        <div className="flex-1 flex items-center overflow-hidden">
+          <div className="flex gap-2 animate-scroll group-hover:animate-pause">
+            {scrollingTools.map((tool, i) => (
+              <div key={`${tool.id}-${i}`}>
+                {tool.iconUrl ? (
+                  <img
+                    src={tool.iconUrl}
+                    alt={tool.name}
+                    className="w-6 h-6 rounded flex-shrink-0"
+                    onError={(e) => {
+                      // Fallback to generated icon if image fails to load
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                ) : null}
+                <div className={tool.iconUrl ? 'hidden' : ''}>
                   {getToolIcon(tool.name)}
-                  
-                  {hoveredTool === tool.id && (
-                    <Card className="absolute top-10 left-0 z-50 p-3 bg-gray-800 border-gray-700 min-w-64">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <h4 className="font-medium text-white">{tool.name}</h4>
-                          <p className="text-xs text-gray-400">v{tool.version}</p>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => onRemoveTool(tool.id)}
-                          className="text-gray-400 hover:text-red-400 p-1 h-auto"
-                        >
-                          <X className="w-4 h-4" />
-                        </Button>
-                      </div>
-                      <p className="text-sm text-gray-300 mb-2">
-                        {tool.description || 'No description available'}
-                      </p>
-                      <div className="flex gap-2">
-                        <Badge variant="outline" className="text-xs border-gray-600 text-gray-400">
-                          {tool.category}
-                        </Badge>
-                        {tool.is_verified && (
-                          <Badge variant="outline" className="text-xs border-green-600 text-green-400">
-                            Verified
-                          </Badge>
-                        )}
-                      </div>
-                    </Card>
-                  )}
                 </div>
               </div>
             ))}
           </div>
         </div>
-
-        {/* Animated preview on hover */}
-        <div className="mt-3 p-3 bg-gray-800 rounded-lg group-hover:animate-pulse">
-          <p className="text-xs text-gray-400">
-            {connectedTools.length} tool{connectedTools.length !== 1 ? 's' : ''} ready for conversation
-          </p>
-        </div>
-      </div>
+        
+        {/* Add to profile text */}
+        <span className="text-sm text-gray-400 flex-shrink-0">
+          Add to profile
+        </span>
+      </button>
     </div>
   );
 };
