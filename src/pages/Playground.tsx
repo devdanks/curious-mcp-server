@@ -97,12 +97,22 @@ export const Playground = () => {
       messages: [...prev.messages, userMessage] 
     }));
 
-    // Mock assistant response after a delay
+    // Enhanced mock response that mentions connected tools
     setTimeout(() => {
+      let responseContent = `I understand you said: "${content}".`;
+      
+      if (content.includes('Connected ') && content.includes('from registry')) {
+        responseContent = `Great! I've successfully connected the new tool. With ${state.connectedTools.length + 1} tools now available, I can help you with even more tasks. What would you like me to do with your enhanced toolbox?`;
+      } else if (state.connectedTools.length > 0) {
+        responseContent += ` With ${state.connectedTools.length} tools connected (${state.connectedTools.map(t => t.name).join(', ')}), I'm ready to help you with various tasks!`;
+      } else {
+        responseContent += ` This is a mock response in the playground. Try typing "search servers" to find and connect tools from the registry!`;
+      }
+
       const assistantMessage: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `I understand you said: "${content}". This is a mock response in the playground. With ${state.connectedTools.length} tools connected, I could help you with various tasks!`,
+        content: responseContent,
         timestamp: new Date(),
       };
 

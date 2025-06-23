@@ -1,10 +1,11 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Send, User, Bot, ChevronDown, Zap } from 'lucide-react';
 import { MCPTool } from '@/types/database';
+import { DevToolbox } from './DevToolbox';
+import { extractSearchQuery } from '@/services/mcpRegistrySearch';
 
 interface Message {
   id: string;
@@ -33,6 +34,8 @@ export const ChatInterface = ({
 }: ChatInterfaceProps) => {
   const [input, setInput] = useState('');
   const [showToolSuggestions, setShowToolSuggestions] = useState(false);
+  const [showDevToolbox, setShowDevToolbox] = useState(false);
+  const [toolboxQuery, setToolboxQuery] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -50,6 +53,7 @@ export const ChatInterface = ({
       onSendMessage(input.trim());
       setInput('');
       setShowToolSuggestions(false);
+      setShowDevToolbox(false);
     }
   };
 
@@ -57,10 +61,23 @@ export const ChatInterface = ({
     const value = e.target.value;
     setInput(value);
     
+    // Check for dev toolbox triggers
+    if (value.includes('search servers') || value.startsWith('/search ')) {
+      const query = extractSearchQuery(value);
+      if (query.length > 2) {
+        setToolboxQuery(query);
+        setShowDevToolbox(true);
+        setShowToolSuggestions(false);
+        return;
+      }
+    } else {
+      setShowDevToolbox(false);
+    }
+    
     // Show tool suggestions when typing "/"
     if (value.endsWith('/') && connectedTools.length > 0) {
       setShowToolSuggestions(true);
-    } else {
+    } else if (!showDevToolbox) {
       setShowToolSuggestions(false);
     }
   };
@@ -77,6 +94,20 @@ export const ChatInterface = ({
     setInput(newInput);
     setShowToolSuggestions(false);
     textareaRef.current?.focus();
+  };
+
+  const handleConnectTool = (tool: MCPTool) => {
+    // Add to connected tools (this would normally go through the parent component)
+    console.log('Connecting tool:', tool.name);
+    setShowDevToolbox(false);
+    setInput('');
+    
+    // Send a message about the connection
+    onSendMessage(`Connected ${tool.name} from ${tool.source || 'registry'}`);
+  };
+
+  const handleAddToProfile = (tool: MCPTool, profileId: string) => {
+    console.log('Adding tool to profile:', tool.name, profileId);
   };
 
   const formatTimestamp = (timestamp: Date) => {
@@ -133,7 +164,7 @@ export const ChatInterface = ({
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
-              placeholder="Press / to add tools or simply give the agent a task"
+              placeholder="Press / to add tools, or type 'search servers' to find new ones"
               className="min-h-[60px] bg-gray-800 border-gray-700 text-white resize-none pr-12"
             />
           </div>
@@ -192,8 +223,17 @@ export const ChatInterface = ({
           </div>
         </form>
 
+        {/* Dev Toolbox - Enhanced search widget */}
+        <DevToolbox
+          query={toolboxQuery}
+          onConnect={handleConnectTool}
+          onAddToProfile={handleAddToProfile}
+          isVisible={showDevToolbox}
+          connectedTools={connectedTools}
+        />
+
         {/* Tool Suggestions */}
-        {showToolSuggestions && (
+        {showToolSuggestions && !showDevToolbox && (
           <Card className="absolute bottom-full mb-2 w-full bg-gray-800 border-gray-700 max-h-48 overflow-y-auto z-10">
             <div className="p-2">
               <p className="text-xs text-gray-400 mb-2">Available tools:</p>
