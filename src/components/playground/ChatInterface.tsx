@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -102,8 +103,9 @@ export const ChatInterface = ({
     setShowDevToolbox(false);
     setInput('');
     
-    // Send a message about the connection
-    onSendMessage(`Connected ${tool.name} from ${tool.source || 'registry'}`);
+    // Send a message about the connection - handle SearchResult or MCPTool
+    const toolSource = 'source' in tool ? tool.source : 'registry';
+    onSendMessage(`Connected ${tool.name} from ${toolSource}`);
   };
 
   const handleAddToProfile = (tool: MCPTool, profileId: string) => {

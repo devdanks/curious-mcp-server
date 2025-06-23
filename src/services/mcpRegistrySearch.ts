@@ -20,6 +20,7 @@ const OFFICIAL_MCP_TOOLS = [
     id: 'filesystem-mcp',
     name: 'File System',
     description: 'Read and write files on the local filesystem',
+    long_description: 'A comprehensive filesystem server that allows Claude to read and write files on your local system. Supports directory operations, file manipulation, and secure file access patterns.',
     category: 'Development',
     source: 'Official MCP' as const,
     matchScore: 0.9,
@@ -32,6 +33,7 @@ const OFFICIAL_MCP_TOOLS = [
     install_command: 'npm install @modelcontextprotocol/server-filesystem',
     is_featured: true,
     is_published: true,
+    is_verified: true,
     keywords: ['filesystem', 'files', 'read', 'write'],
     license: 'MIT',
     repository_url: 'https://github.com/modelcontextprotocol/servers',
@@ -39,12 +41,17 @@ const OFFICIAL_MCP_TOOLS = [
     stars: 892,
     tags: ['development', 'files'],
     updated_at: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    mcp_version: '1.0.0',
+    transport_types: ['stdio'],
+    metadata: {},
+    organization_id: null
   },
   {
     id: 'sqlite-mcp',
     name: 'SQLite',
     description: 'Interact with SQLite databases',
+    long_description: 'Connect to and query SQLite databases with full SQL support. Execute queries, manage schemas, and perform database operations securely through the MCP protocol.',
     category: 'Database',
     source: 'Official MCP' as const,
     matchScore: 0.8,
@@ -57,6 +64,7 @@ const OFFICIAL_MCP_TOOLS = [
     install_command: 'npm install @modelcontextprotocol/server-sqlite',
     is_featured: true,
     is_published: true,
+    is_verified: true,
     keywords: ['sqlite', 'database', 'sql'],
     license: 'MIT',
     repository_url: 'https://github.com/modelcontextprotocol/servers',
@@ -64,7 +72,11 @@ const OFFICIAL_MCP_TOOLS = [
     stars: 654,
     tags: ['database', 'sql'],
     updated_at: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    mcp_version: '1.0.0',
+    transport_types: ['stdio'],
+    metadata: {},
+    organization_id: null
   }
 ];
 
