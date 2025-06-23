@@ -22,6 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.dan/mcp-registry-prompt.md
-.dan/mcp-registry-project-handoff.md
-.dan/mcp-phase5-handover.md
+
+# Developer directories and files
+.dan/*
