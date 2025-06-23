@@ -111,7 +111,15 @@ export const DevToolbox = ({
       mcp_version: '1.0.0',
       transport_types: ['stdio'],
       metadata: {
-        mcpServer: server,
+        mcpServer: {
+          id: server.id,
+          name: server.name,
+          description: server.description,
+          packageName: server.packageName,
+          source: server.source,
+          version: server.version,
+          downloads: server.downloads
+        },
         serverData: {
           repository: server.repository,
           packages: server.packages

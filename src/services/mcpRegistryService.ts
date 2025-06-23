@@ -64,12 +64,15 @@ export interface TransformedServer {
 }
 
 class MCPRegistryService {
-  private readonly baseUrl = 'https://registry.modelcontextprotocol.io/v0';
+  private readonly baseUrl = 'https://lvpoqyklxclygwggryxo.supabase.co/functions/v1/mcp-registry-proxy';
   
   async searchServers(query?: string, limit: number = 30): Promise<MCPServer[]> {
     try {
       // Get all servers first (registry doesn't have search endpoint)
-      const response = await fetch(`${this.baseUrl}/servers?limit=${limit}`);
+      const url = new URL(this.baseUrl);
+      url.searchParams.set('limit', limit.toString());
+      
+      const response = await fetch(url.toString());
       
       if (!response.ok) {
         throw new Error(`Registry API error: ${response.status}`);
@@ -95,7 +98,10 @@ class MCPRegistryService {
   
   async getServerById(id: string): Promise<MCPServer | null> {
     try {
-      const response = await fetch(`${this.baseUrl}/servers/${id}`);
+      const url = new URL(this.baseUrl);
+      url.searchParams.set('endpoint', `servers/${id}`);
+      
+      const response = await fetch(url.toString());
       if (!response.ok) {
         return null;
       }
@@ -108,7 +114,10 @@ class MCPRegistryService {
 
   async checkHealth(): Promise<'online' | 'offline'> {
     try {
-      const response = await fetch(`${this.baseUrl}/health`);
+      const url = new URL(this.baseUrl);
+      url.searchParams.set('endpoint', 'health');
+      
+      const response = await fetch(url.toString());
       if (response.ok) {
         const data = await response.json();
         return data.status === 'ok' ? 'online' : 'offline';
